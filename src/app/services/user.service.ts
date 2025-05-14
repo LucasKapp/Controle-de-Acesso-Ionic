@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'https://materialapp-production.up.railway.app';
 
   constructor(private http: HttpClient) {}
 

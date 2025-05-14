@@ -21,7 +21,6 @@ app.use(bodyParser.json());
 
 const SECRET = 'senha123';
 
-// Abrir o banco SQLite
 let db: any;
 (async () => {
   db = await open({
@@ -49,7 +48,6 @@ let db: any;
   `);
 })();
 
-// Middleware de autenticação
 export function auth(req: Request, res: Response, next: NextFunction): void {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
@@ -67,7 +65,6 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
   }
 }
 
-// Cadastro
 app.post('/register', async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   const hash = await bcrypt.hash(password, 10);
@@ -79,7 +76,6 @@ app.post('/register', async (req: Request, res: Response) => {
   }
 });
 
-// Login
 app.post('/login', async (req: Request, res: Response) => {
   const { username, password } = req.body;
   const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
@@ -91,7 +87,6 @@ app.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-// Cadastrar material
 app.post('/materials', auth, async (req: Request, res: Response) => {
   const { name, description, quantity } = req.body;
   await db.run(
@@ -101,7 +96,6 @@ app.post('/materials', auth, async (req: Request, res: Response) => {
   res.json({ success: true });
 });
 
-// Listar materiais
 app.get('/materials', auth, async (req: Request, res: Response) => {
   const materials = await db.all('SELECT * FROM materials WHERE userId = ?', [req.userId]);
   res.json(materials);

@@ -1,0 +1,7 @@
+{
+  "name": "materialApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

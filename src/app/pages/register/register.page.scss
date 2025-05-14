@@ -1,0 +1,36 @@
+ion-header {
+  background-color: #4CAF50; 
+}
+
+ion-toolbar {
+  --background: #3880ff;
+}
+
+ion-title {
+  color: white;
+}
+
+ion-content {
+  padding: 20px;
+  background-color: #f7f7f7;
+}
+
+ion-item {
+  margin-bottom: 15px;
+}
+
+ion-label {
+  font-size: 16px;
+  color: #333;
+}
+
+ion-input {
+  font-size: 16px;
+}
+
+ion-button {
+  --background: #3880ff;
+  --color: white;
+  font-size: 16px;
+  padding: 12px;
+}

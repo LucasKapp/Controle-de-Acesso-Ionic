@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class AcessoService {
 
-  private apiUrl = 'http://controle-de-acesso-ionic-production.up.railway.app';
+  private apiUrl = 'https://controle-de-acesso-ionic-production.up.railway.app';
 
   constructor(private http: HttpClient) {}
 

@@ -1,4 +1,3 @@
-// src/app/services/user.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,15 +7,15 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
 
-  private apiUrl = 'https://materialapp-production.up.railway.app';
+  private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {}
 
-  register(username: string, email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, { username, email, password });
+  register(username: string, id: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, { username, id, password });
   }
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { username, password });
+  login(id: string, password: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { id, password });
   }
 }

@@ -8,23 +8,23 @@ interface LoginResponse { success: boolean; token: string; }
 
 @Component({
   selector: 'app-login',
-  standalone: true,          
-  imports: [IonicModule, FormsModule, RouterModule], 
+  standalone: true,
+  imports: [IonicModule, FormsModule, RouterModule],
   templateUrl: 'login.page.html',
   styleUrls: ['login.page.scss'],
 })
 export class LoginPage {
-  username = '';
-  password = '';
+  id: string = '';
+  password: string = '';
 
   constructor(private userService: UserService, private router: Router) {}
 
   login() {
-    this.userService.login(this.username, this.password)
+   this.userService.login(this.id, this.password)
       .subscribe((res: LoginResponse) => {
         if (res.success) {
           localStorage.setItem('userToken', res.token);
-          this.router.navigate(['/material']);
+          this.router.navigate(['/acesso']);
         } else {
           alert('Login failed');
         }

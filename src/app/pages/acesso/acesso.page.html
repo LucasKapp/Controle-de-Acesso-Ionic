@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Controle de Acesso</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form (ngSubmit)="registrarAcesso()">
+    <ion-item>
+      <ion-label position="floating">ID do Funcionário</ion-label>
+      <ion-input type="text" [(ngModel)]="funcionarioId" name="funcionarioId" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating"></ion-label>
+      <ion-datetime displayFormat="HH:mm dd/MM/yyyy" [(ngModel)]="horario" name="horario" required></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Quantidade de Acessos</ion-label>
+      <ion-input type="number" [(ngModel)]="quantidade" name="quantidade" required></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="!funcionarioId || !horario || !quantidade">Registrar Acesso</ion-button>
+  </form>
+
+  <ion-list *ngIf="acessos.length > 0">
+    <ion-list-header>
+      <ion-label>Lista de Acessos</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let acesso of acessos">
+      <ion-label>
+        <h2>ID: {{ acesso.funcionarioId }}</h2>
+        <p>Horário: {{ formatarHorario(acesso.horario) }}</p>
+        <p>Quantidade: {{ acesso.quantidade }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

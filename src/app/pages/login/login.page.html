@@ -7,11 +7,11 @@
 <ion-content class="ion-padding">
   <form (ngSubmit)="login()">
     <ion-item>
-      <ion-label position="floating">Nome</ion-label>
+      <ion-label position="floating">ID do Funcionário</ion-label>
       <ion-input
         type="text"
-        [(ngModel)]="username"
-        name="username"
+        [(ngModel)]="id"
+        name="id"
         required>
       </ion-input>
     </ion-item>
@@ -29,7 +29,7 @@
     <ion-button
       expand="block"
       type="submit"
-      [disabled]="!username || !password">
+      [disabled]="!id || !password">
       Login
     </ion-button>
   </form>

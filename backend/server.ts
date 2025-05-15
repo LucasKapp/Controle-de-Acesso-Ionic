@@ -1,4 +1,3 @@
-// backend/server.ts
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -31,19 +30,18 @@ let db: any;
   await db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      username TEXT UNIQUE,
-      email TEXT,
+      username TEXT,
+      funcionarioId TEXT UNIQUE,
       password TEXT
     )
   `);
 
   await db.run(`
-    CREATE TABLE IF NOT EXISTS materials (
+    CREATE TABLE IF NOT EXISTS acessos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT,
-      description TEXT,
-      quantity INTEGER,
-      userId INTEGER
+      funcionarioId TEXT,
+      horario TEXT,
+      quantidade INTEGER
     )
   `);
 })();
@@ -66,39 +64,59 @@ export function auth(req: Request, res: Response, next: NextFunction): void {
 }
 
 app.post('/register', async (req: Request, res: Response) => {
-  const { username, email, password } = req.body;
+  const { username, id: funcionarioId, password } = req.body;
+  if (!username || !funcionarioId || !password) {
+    res.status(400).json({ success: false, message: 'Campos obrigatórios faltando' });
+    return;
+  }
   const hash = await bcrypt.hash(password, 10);
   try {
-    await db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [username, email, hash]);
+    await db.run('INSERT INTO users (username, funcionarioId, password) VALUES (?, ?, ?)', [username, funcionarioId, hash]);
     res.json({ success: true });
   } catch (e: any) {
-    res.json({ success: false, error: e.message });
+    res.status(500).json({ success: false, error: e.message });
   }
 });
 
 app.post('/login', async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-  const user = await db.get('SELECT * FROM users WHERE username = ?', [username]);
+  const { id: funcionarioId, password } = req.body;
+  if (!funcionarioId || !password) {
+    res.status(400).json({ success: false, message: 'Campos obrigatórios faltando' });
+    return;
+  }
+  const user = await db.get('SELECT * FROM users WHERE funcionarioId = ?', [funcionarioId]);
   if (user && await bcrypt.compare(password, user.password)) {
     const token = jwt.sign({ id: user.id }, SECRET, { expiresIn: '1h' });
     res.json({ success: true, token });
   } else {
-    res.json({ success: false });
+    res.status(401).json({ success: false, message: 'Credenciais inválidas' });
   }
 });
 
-app.post('/materials', auth, async (req: Request, res: Response) => {
-  const { name, description, quantity } = req.body;
-  await db.run(
-    'INSERT INTO materials (name, description, quantity, userId) VALUES (?, ?, ?, ?)',
-    [name, description, quantity, req.userId]
-  );
-  res.json({ success: true });
+app.post('/acessos', auth, async (req: Request, res: Response) => {
+  const { funcionarioId, horario, quantidade } = req.body;
+  if (!funcionarioId || !horario || quantidade === undefined) {
+    res.status(400).json({ success: false, message: 'Campos obrigatórios faltando' });
+    return;
+  }
+  try {
+    await db.run(
+      'INSERT INTO acessos (funcionarioId, horario, quantidade) VALUES (?, ?, ?)',
+      [funcionarioId, horario, quantidade]
+    );
+    res.json({ success: true });
+  } catch (e: any) {
+    res.status(500).json({ success: false, error: e.message });
+  }
 });
 
-app.get('/materials', auth, async (req: Request, res: Response) => {
-  const materials = await db.all('SELECT * FROM materials WHERE userId = ?', [req.userId]);
-  res.json(materials);
+app.get('/acessos', auth, async (req: Request, res: Response) => {
+  try {
+    const acessos = await db.all('SELECT * FROM acessos');
+    res.json(acessos);
+  } catch (e: any) {
+    res.status(500).json({ success: false, error: e.message });
+  }
 });
 
-app.listen(3000, () => console.log('✅ API rodando em http://localhost:3000'));
+app.listen(3000, () => console.log('rodando em http://localhost:3000'));

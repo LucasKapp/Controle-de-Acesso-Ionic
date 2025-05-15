@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 
 import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
-import { MaterialPage } from './pages/material/material.page';
+import { AcessoPage } from './pages/acesso/acesso.page';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { MaterialPage } from './pages/material/material.page';
     AppRoutingModule,
     LoginPage,    
     RegisterPage,   
-    MaterialPage   
+    AcessoPage   
   ],
   bootstrap: [AppComponent]
 })

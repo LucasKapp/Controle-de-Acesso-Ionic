@@ -18,13 +18,13 @@ interface RegisterResponse {
 export class RegisterPage {
 
   username: string = '';
-  email: string = '';
+  id: string = '';
   password: string = '';
 
   constructor(private userService: UserService, private router: Router) {}
 
   register() {
-    this.userService.register(this.username, this.email, this.password).subscribe((response: RegisterResponse) => {
+    this.userService.register(this.username, this.id, this.password).subscribe((response: RegisterResponse) => {
       if (response.success) {
         this.router.navigate(['/login']);
       } else {

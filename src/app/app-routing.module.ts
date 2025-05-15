@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginPage } from './pages/login/login.page';
 import { RegisterPage } from './pages/register/register.page';
-import { MaterialPage } from './pages/material/material.page';
+import { AcessoPage } from './pages/acesso/acesso.page';
 
 const routes: Routes = [
   { path: 'login', component: LoginPage },
   { path: 'register', component: RegisterPage },
-  { path: 'material', component: MaterialPage },
+  { path: 'acesso', component: AcessoPage },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
 
